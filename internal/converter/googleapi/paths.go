@@ -134,6 +134,7 @@ func httpRuleToPathMap(opts options.Options, md protoreflect.MethodDescriptor, r
 			// query/param or request body
 			fieldNamesInPath[string(field.FullName())] = struct{}{}
 			fieldNamesInPath[strings.Join(jsonPath, ".")] = struct{}{} // sometimes JSON field names are used
+			fieldNamesInPath[util.MakeFieldName(opts, field)] = struct{}{}
 
 			// For nested params (e.g., "parent_ref.resource_id"), also track the
 			// top-level field so it can be excluded from the request body schema
@@ -189,6 +190,7 @@ func httpRuleToPathMap(opts options.Options, md protoreflect.MethodDescriptor, r
 					if field != nil {
 						fieldNamesInPath[string(field.FullName())] = struct{}{}
 						fieldNamesInPath[field.JSONName()] = struct{}{}
+						fieldNamesInPath[util.MakeFieldName(opts, field)] = struct{}{}
 						parameterSchema := schema.FieldToSchema(opts, nil, field)
 						// Path parameters must be primitives.
 						if slices.Contains(parameterSchema.Schema().Type, "object") || slices.Contains(parameterSchema.Schema().Type, "array") {
