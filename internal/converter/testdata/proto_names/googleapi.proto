@@ -20,6 +20,15 @@ service Foo {
   rpc NamedPathPatterns(Something) returns (google.protobuf.Empty) {
     option (google.api.http).get = "/v1/{property_in_path=messages/*}";
   }
+
+  // Snake-case path param plus a oneOf body. with-proto-names must strip
+  // account_id from the request body, not only the JSON name accountId.
+  rpc UpdateWithOneof(UpdateWithOneofRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      patch: "/v1/accounts/{account_id}"
+      body: "*"
+    };
+  }
 }
 
 message MaskyRequest {
@@ -37,3 +46,19 @@ message Something {
 }
 
 message Foo2Response {}
+
+message Profile {
+  string display_name = 1;
+}
+
+message Settings {
+  string theme = 1;
+}
+
+message UpdateWithOneofRequest {
+  string account_id = 1;
+  oneof details {
+    Profile profile = 2;
+    Settings settings = 3;
+  }
+}

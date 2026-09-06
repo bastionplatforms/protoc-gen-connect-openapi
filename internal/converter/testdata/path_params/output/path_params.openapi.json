@@ -4,6 +4,100 @@
     "title": "path_params"
   },
   "paths": {
+    "/accounts/{accountId}": {
+      "patch": {
+        "tags": [
+          "path_params.PathParams"
+        ],
+        "summary": "UpdateWithOneof",
+        "description": "Snake-case path param plus a oneOf body. JSON names must strip\n accountId from the request body.",
+        "operationId": "path_params.PathParams.UpdateWithOneof",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "account_id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "allOf": [
+                  {},
+                  {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "profile": {
+                            "title": "profile",
+                            "$ref": "#/components/schemas/path_params.Profile"
+                          }
+                        },
+                        "title": "profile",
+                        "required": [
+                          "profile"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "settings": {
+                            "title": "settings",
+                            "$ref": "#/components/schemas/path_params.Settings"
+                          }
+                        },
+                        "title": "settings",
+                        "required": [
+                          "settings"
+                        ]
+                      },
+                      {
+                        "not": {
+                          "anyOf": [
+                            {
+                              "required": [
+                                "profile"
+                              ]
+                            },
+                            {
+                              "required": [
+                                "settings"
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "unevaluatedProperties": false,
+                "title": "UpdateWithOneofRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/google.protobuf.Empty"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/go/{snakeCase}": {
       "post": {
         "tags": [
@@ -471,6 +565,67 @@
           "id"
         ],
         "description": "UpdateRequest has a path param, regular fields, and a oneOf.\n This tests that the requestBody is generated correctly when\n MessageToSchema wraps properties+oneOf under AllOf."
+      },
+      "path_params.UpdateWithOneofRequest": {
+        "type": "object",
+        "allOf": [
+          {
+            "properties": {
+              "accountId": {
+                "type": "string",
+                "title": "account_id"
+              }
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "profile": {
+                    "title": "profile",
+                    "$ref": "#/components/schemas/path_params.Profile"
+                  }
+                },
+                "title": "profile",
+                "required": [
+                  "profile"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "settings": {
+                    "title": "settings",
+                    "$ref": "#/components/schemas/path_params.Settings"
+                  }
+                },
+                "title": "settings",
+                "required": [
+                  "settings"
+                ]
+              },
+              {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "profile"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "settings"
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "unevaluatedProperties": false,
+        "title": "UpdateWithOneofRequest"
       }
     }
   },

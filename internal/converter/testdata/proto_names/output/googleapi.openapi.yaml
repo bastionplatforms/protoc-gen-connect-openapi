@@ -50,6 +50,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/google.protobuf.Empty'
+  /v1/accounts/{account_id}:
+    patch:
+      tags:
+        - proto_names.io.swagger.petstore.v2.Foo
+      summary: UpdateWithOneof
+      description: |-
+        Snake-case path param plus a oneOf body. with-proto-names must strip
+         account_id from the request body, not only the JSON name accountId.
+      operationId: proto_names.io.swagger.petstore.v2.Foo.UpdateWithOneof
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: account_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - {}
+                - oneOf:
+                    - type: object
+                      properties:
+                        profile:
+                          title: profile
+                          $ref: '#/components/schemas/proto_names.io.swagger.petstore.v2.Profile'
+                      title: profile
+                      required:
+                        - profile
+                    - type: object
+                      properties:
+                        settings:
+                          title: settings
+                          $ref: '#/components/schemas/proto_names.io.swagger.petstore.v2.Settings'
+                      title: settings
+                      required:
+                        - settings
+                    - not:
+                        anyOf:
+                          - required:
+                              - profile
+                          - required:
+                              - settings
+              unevaluatedProperties: false
+              title: UpdateWithOneofRequest
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/google.protobuf.Empty'
   /v1/messages/{message}:
     get:
       tags:
@@ -415,6 +471,22 @@ components:
           $ref: '#/components/schemas/google.protobuf.FieldMask'
       title: MaskyRequest
       additionalProperties: false
+    proto_names.io.swagger.petstore.v2.Profile:
+      type: object
+      properties:
+        display_name:
+          type: string
+          title: display_name
+      title: Profile
+      additionalProperties: false
+    proto_names.io.swagger.petstore.v2.Settings:
+      type: object
+      properties:
+        theme:
+          type: string
+          title: theme
+      title: Settings
+      additionalProperties: false
     proto_names.io.swagger.petstore.v2.Something:
       type: object
       properties:
@@ -426,6 +498,38 @@ components:
           title: property_in_query
       title: Something
       additionalProperties: false
+    proto_names.io.swagger.petstore.v2.UpdateWithOneofRequest:
+      type: object
+      allOf:
+        - properties:
+            account_id:
+              type: string
+              title: account_id
+        - oneOf:
+            - type: object
+              properties:
+                profile:
+                  title: profile
+                  $ref: '#/components/schemas/proto_names.io.swagger.petstore.v2.Profile'
+              title: profile
+              required:
+                - profile
+            - type: object
+              properties:
+                settings:
+                  title: settings
+                  $ref: '#/components/schemas/proto_names.io.swagger.petstore.v2.Settings'
+              title: settings
+              required:
+                - settings
+            - not:
+                anyOf:
+                  - required:
+                      - profile
+                  - required:
+                      - settings
+      unevaluatedProperties: false
+      title: UpdateWithOneofRequest
 security: []
 tags:
   - name: proto_names.io.swagger.petstore.v2.Foo

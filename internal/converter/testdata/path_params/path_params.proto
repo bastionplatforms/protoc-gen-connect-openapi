@@ -81,6 +81,23 @@ service PathParams {
       body: "*"
     };
   }
+
+  // Snake-case path param plus a oneOf body. JSON names must strip
+  // accountId from the request body.
+  rpc UpdateWithOneof(UpdateWithOneofRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      patch: "/accounts/{account_id}"
+      body: "*"
+    };
+  }
+}
+
+message UpdateWithOneofRequest {
+  string account_id = 1;
+  oneof details {
+    Profile profile = 2;
+    Settings settings = 3;
+  }
 }
 
 service BookService {
