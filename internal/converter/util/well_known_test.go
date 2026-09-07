@@ -5,6 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/sudorandom/protoc-gen-connect-openapi/internal/converter/options"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -181,9 +182,16 @@ func TestWellKnownToSchema(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.True(t, IsWellKnown(tt.md))
-			res := WellKnownToSchema(tt.md)
+			res := WellKnownToSchema(options.NewOptions(), tt.md)
 			require.NotNil(t, res)
 			tt.check(t, res)
+
+			opts := options.NewOptions()
+			opts.WithoutWellKnownTypeDescriptions = true
+			withoutDescription := WellKnownToSchema(opts, tt.md)
+			require.NotNil(t, withoutDescription)
+			assert.Empty(t, withoutDescription.Schema.Description)
+			tt.check(t, withoutDescription)
 		})
 	}
 
@@ -200,7 +208,7 @@ func TestWellKnownToSchema(t *testing.T) {
 		md := fd.Messages().Get(0)
 
 		assert.False(t, IsWellKnown(md))
-		assert.Nil(t, WellKnownToSchema(md))
+		assert.Nil(t, WellKnownToSchema(options.NewOptions(), md))
 	})
 }
 

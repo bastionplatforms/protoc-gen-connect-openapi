@@ -19,6 +19,7 @@ func TestFromString(t *testing.T) {
 			"with-streaming",
 			"with-proto-names",
 			"with-proto-annotations",
+			"without-well-known-type-descriptions",
 			"trim-unused-types",
 			"fully-qualified-message-names",
 			"without-default-tags",
@@ -37,6 +38,7 @@ func TestFromString(t *testing.T) {
 		assert.True(t, opts.WithStreaming)
 		assert.True(t, opts.WithProtoNames)
 		assert.True(t, opts.WithProtoAnnotations)
+		assert.True(t, opts.WithoutWellKnownTypeDescriptions)
 		assert.True(t, opts.TrimUnusedTypes)
 		assert.True(t, opts.FullyQualifiedMessageNames)
 		assert.True(t, opts.WithoutDefaultTags)

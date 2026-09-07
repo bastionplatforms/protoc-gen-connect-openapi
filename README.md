@@ -191,6 +191,7 @@ protoc-gen-connect-openapi also has support for the [OpenAPI v3 annotations](htt
 | with-streaming             | - | Generate OpenAPI for client/server/bidirectional streaming RPCs (can be messy).                                                                                    |
 | without-default-tags       | - | Avoid appending default tags in the resulting OAS doc. All tags need to be explicitly defined through annotations.                                                 |
 | without-field-behavior-prefixes | - | Omit description prefixes from `google.api.field_behavior` annotations (`OPTIONAL`, `IMMUTABLE`, `UNORDERED_LIST`, `NON_EMPTY_DEFAULT`, `IDENTIFIER`). OpenAPI `required`, `readOnly`, and `writeOnly` are still applied. |
+| without-well-known-type-descriptions | - | Omit descriptions for the [well-known types](https://protobuf.dev/reference/protobuf/google.protobuf/) (`google.protobuf.Timestamp`, `google.protobuf.Duration`, etc.). Their comments document the protobuf representation, which frequently doesn't match the JSON representation that the generated schema describes. Descriptions written on your own fields are unaffected. |
 
 ### Features
 

@@ -220,6 +220,15 @@ func WithProtoAnnotations(enabled bool) Option {
 	}
 }
 
+// WithoutWellKnownTypeDescriptions omits descriptions for well-known types, whose comments describe
+// the protobuf representation rather than the JSON representation that is generated.
+func WithoutWellKnownTypeDescriptions(enabled bool) Option {
+	return func(g *generator) error {
+		g.options.WithoutWellKnownTypeDescriptions = enabled
+		return nil
+	}
+}
+
 // WithServices will limit the services generated.
 func WithServices(serviceNames []protoreflect.FullName) Option {
 	return func(g *generator) error {

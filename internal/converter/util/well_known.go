@@ -4,6 +4,7 @@ import (
 	"github.com/pb33f/libopenapi/datamodel/high/base"
 	"github.com/pb33f/libopenapi/orderedmap"
 	"github.com/pb33f/libopenapi/utils"
+	"github.com/sudorandom/protoc-gen-connect-openapi/internal/converter/options"
 	"go.yaml.in/yaml/v4"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -42,12 +43,16 @@ func IsWellKnown(msg protoreflect.MessageDescriptor) bool {
 	return ok
 }
 
-func WellKnownToSchema(msg protoreflect.MessageDescriptor) *IDSchema {
+func WellKnownToSchema(opts options.Options, msg protoreflect.MessageDescriptor) *IDSchema {
 	fn, ok := wellKnownToSchemaFns[string(msg.FullName())]
 	if !ok {
 		return nil
 	}
-	return fn(msg)
+	idSchema := fn(msg)
+	if opts.WithoutWellKnownTypeDescriptions && idSchema != nil && idSchema.Schema != nil {
+		idSchema.Schema.Description = ""
+	}
+	return idSchema
 }
 
 func googleDuration(msg protoreflect.MessageDescriptor) *IDSchema {

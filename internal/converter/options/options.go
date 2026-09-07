@@ -50,6 +50,10 @@ type Options struct {
 	TrimUnusedTypes bool
 	// WithProtoAnnotations will add some protobuf annotations for descriptions
 	WithProtoAnnotations bool
+	// WithoutWellKnownTypeDescriptions omits descriptions for well-known types. The comments on these
+	// types document the protobuf representation, which often does not match the JSON representation
+	// that the generated schema describes.
+	WithoutWellKnownTypeDescriptions bool
 	// FullyQualifiedMessageNames uses the full path for message types: {pkg}.{name} instead of just the name. This
 	// is helpful if you are mixing types from multiple services.
 	FullyQualifiedMessageNames bool
@@ -173,6 +177,8 @@ func FromString(s string) (Options, error) {
 			opts.WithProtoNames = true
 		case param == "with-proto-annotations":
 			opts.WithProtoAnnotations = true
+		case param == "without-well-known-type-descriptions":
+			opts.WithoutWellKnownTypeDescriptions = true
 		case param == "trim-unused-types":
 			opts.TrimUnusedTypes = true
 		case param == "fully-qualified-message-names":
